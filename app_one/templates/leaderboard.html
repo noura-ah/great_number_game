@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<form action="/clear">
+    <input type="submit" name="btn" id="btn" class='btn btn-dark pr-5 pl-5' value="Play">
+</form>
+<hr style="color:black;height: 1px; width:100%;background-color:rgb(33, 37, 41);">
+<h3 class="mt-4 font-bolder">Leaderboard</h3>
+<table class="table ">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users%}
+        <tr>
+            <th scope="col">{{forloop.counter}}</th>
+            <td scope="col">{{user.username}}</td>
+            <td scope="col">{{user.score}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+
+
+{% endblock %}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .box {
+            background: rgb(252, 100, 100);
+            border-radius: 4px;
+            /* padding-bottom: 100%; */
+            height: 300px;
+            width: 300px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container w-50 text-center d-flex flex-column justify-content-center align-items-center">
+        <h1>Welcome the the Great Number Game!</h1>
+        <p>I am thinking of a number between 1 and 100 <br>
+            Take a guess!</p>
+        {% block content %}
+        <div class=" mb-4">
+            {% if result == 'win' %}
+            <div id="box-win" style="background-color:rgb(100, 252, 204) ;"
+                class="box d-flex flex-column align-items-center justify-content-center">
+                <h1 id="result">{{rand}} was the number!</h1>
+                {% if success == 1 %}
+                <form action="/submit_username" method="post" class="d-flex justify-content-center w-75 ">
+                    {% csrf_token %}
+                    <div class=" input-group mb-3 ">
+                        <input type="text" class="form-control" placeholder="Your name" name="username">
+                        <div class="input-group-append">
+                            <input class="btn btn-dark" type="submit" value="submit">
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+                <form action="/clear">
+                    <input type="submit" name="btn" id="btn" class='btn btn-light' value="Play Again">
+                </form>
+            </div>
+            {% elif result == 'lose' %}
+            <div id="box-lose" class="box d-flex flex-column justify-content-center">
+                <h1 id="result">You Lost!</h1>
+                <form action="/clear">
+                    <input type="submit" name="btn" id="btn" class='btn btn-light' value="Play Again">
+                </form>
+            </div>
+            {% elif result %}
+            <div id="" class="box d-flex justify-content-center align-items-center">
+                <h1 id="result">{{result}}</h1>
+            </div>
+            {% endif %}
+        </div>
+        <div class="container d-flex flex-column justify-content-center align-items-center mb-4">
+            <form action="/result" method="post" id="submit_form">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="number" class="form-control" placeholder="number" name="num" id="num">
+                    <div class="input-group-append">
+                        <input class="btn btn-dark" type="submit" name="btn" id="submit_btn" value="submit">
+                    </div>
+                </div>
+            </form>
+            <div>
+                <p>number of attempts is: {{counter}}</p>
+                <a href="/leaderboard"><button class="btn btn-dark" type="submit" name="btn"
+                        value="leaderboard">Leaderboard</button></a>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+    <script>
+        var div = document.getElementById('submit_btn')
+        var div1 = document.getElementById('num')
+        var form = document.getElementById('submit_form')
+        function rem() {
+            form.remove()
+            div.remove()
+            div1.remove()
+        }
+        if (document.getElementById('box-win')) {
+            document.getElementById('box-win').onload(rem())
+        }
+        else {
+            document.getElementById('box-lose').onload(rem())
+        }
+
+    </script>
+</body>
+
+</html>
